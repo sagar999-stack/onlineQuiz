@@ -1,0 +1,127 @@
+<?php
+   include("class/users.php");
+   $question=new users;
+   $category= $_POST['category'];
+   $_SESSION['category']=$category;
+   $question->qus_shows($category);
+   
+   
+   ?>
+<script type="text/javascript">
+   function timeout(){
+    
+      var minute=Math.floor(timeLeft/60);
+     var second=timeLeft%60; 
+     if(timeLeft<=0)
+     {
+      clearTimeout(tm);
+        document.getElementById("form1").submit();
+   
+     }
+     else
+     {
+         document.getElementById("time").innerHTML=minute+":"+second;
+     }
+     timeLeft--;
+    var tm= setTimeout(function(){timeout()},1000);
+   }
+</script>
+<script type="text/javascript">
+   var timeLeft=2*60;
+</script>
+<body onload="timeout()" >
+   <?php include 'styles.php';?>
+   <?php include 'header.php';?>
+   <div  class="container " style="margin-top:5vw ">
+      <div class="row">
+         <div class="col-md-4">
+            <div class="container">
+               <section id="timer">
+                  <div class="row">
+                     <div class="col-xs-12 col-sm-12 col-md-12 countdown-wrapper text-center mb20">
+                        <div class="card">
+                           <div class="card-block">
+                              <div id="countdown">
+                                 <div class="well">
+                                    <span id="time" class="timer bg-success"> time 
+                                    </span>
+                                    <!--  <span id="min" class="timer bg-info"></span>
+                                       <span id="sec" class="timer bg-primary"></span> -->
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </section>
+            </div>
+         </div>
+         <div class="col-md-8">
+            <form method="post" id="form1" action="answer.php">
+               <?php $i=1; foreach ($question->questions as $qus) { 
+                  ?>
+               <div class="card shadow-lg p-3 mb-5 bg-white rounded">
+                  <div class="card-body">
+                     <table class="table">
+                        <thead class="thead-dark">
+                           <tr>
+                              <th scope="col">
+                                 <h3><?php echo $i;?></h3>
+                              </th>
+                              <th scope="col">
+                                 <h3><?php echo $qus['question'];?></h3>
+                              </th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <?php if(isset($qus['ans1'])) {?>
+                           <div  id="question" value="<?php echo $qus['id'];?>"  > </div>
+                           <tr>
+                              <th scope="row">1&emsp; <input  type="radio" value="0" name="<?php echo $qus['id'];?>"> </th>
+                              <td>
+                                 <h4><?php echo $qus['ans1'];?></h4>
+                              </td>
+                           </tr>
+                           <?php } ?>
+                           <?php if(isset($qus['ans2'])) {?>
+                           <div class="hidden" id="question" value="<?php echo $qus['id'];?>"  > </div>
+                           <tr>
+                              <th scope="row">2&emsp; <input  type="radio" value="1" name="<?php echo $qus['id'];?>"></th>
+                              <td>
+                                 <h4><?php echo $qus['ans2'];?></h4>
+                              </td>
+                           </tr>
+                           <?php } ?>
+                           <?php if(isset($qus['ans3'])) {?>
+                           <div class="hidden" id="question" value="<?php echo $qus['id'];?>"  > </div>
+                           <tr>
+                              <th scope="row">3&emsp; <input  type="radio" value="2" name="<?php echo $qus['id'];?>"></th>
+                              <td>
+                                 <h4><?php echo $qus['ans3'];?></h4>
+                              </td>
+                           </tr>
+                           <?php } ?>
+                           <?php if(isset($qus['ans4'])) {?>
+                           <div class="hidden" id="question" value="<?php echo $qus['id'];?>"  > </div>
+                           <tr>
+                              <th scope="row">4&emsp; <input  type="radio" value="3" name="<?php echo $qus['id'];?>"></th>
+                              <td>
+                                 <h4><?php echo $qus['ans4'];?></h4>
+                              </td>
+                           </tr>
+                           <?php } ?>
+                           <input type="radio" checked="checked" style="display: none;" value="not_attempt" name="<?php echo $qus['id'];?>">
+                        </tbody>
+                     </table>
+                  </div>
+               </div>
+                <?php $i++; } ?>
+         <input type="submit" value="submit Quiz" class="btn btn-success" name="">
+         </form>
+         </div>
+        
+      </div>
+   </div>
+ 
+</body>
+<?php include 'scripts.php';?>
